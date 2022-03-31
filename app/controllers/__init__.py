@@ -12,6 +12,7 @@ fruit_table = '''
 region_columns = ['id_region', 'name']
 region_table = '''
     "id_region" SERIAL CONSTRAINT pk_region PRIMARY KEY,
-    "name" VARCHAR(20) CONSTRAINT un_region UNIQUE NOT NULL
+    "name" VARCHAR(20) CONSTRAINT un_region UNIQUE NOT NULL,
+    "status" BOOLEAN CONSTRAINT df_region DEFAULT true
 '''
 
