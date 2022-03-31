@@ -4,6 +4,7 @@ from psycopg2.errors import InvalidTextRepresentation, UniqueViolation
 
 from flask import jsonify, request
 from app.models.fruit_model import Fruit
+from app.models.region_model import Region
 
 
 def get_all_fruit():
@@ -34,17 +35,23 @@ def post_fruit():
 
     payload = request.get_json()
 
+    region = payload['region']
+
+    valid_region = Region.get_id_by_name(region)
+
+    print('=' * 100)
+    print(valid_region)
+
+    if not valid_region:
+        return {'erro': 'A região informada não foi cadastrada'}, HTTPStatus.BAD_REQUEST
+
     try:
         new_fruit = Fruit(**payload)
         result = new_fruit.create_fruit()
 
-    except InvalidTextRepresentation:
-
-        return {'erro': 'A região informada não foi cadastrada'}, HTTPStatus.BAD_REQUEST
-
     except UniqueViolation:
 
-        return {'erro': 'A fruta que está cadastrando já consta em nosso banco de dados'}
+        return {'erro': 'A fruta que está cadastrando já consta em nosso banco de dados'}, HTTPStatus.BAD_REQUEST
 
     serialized_result = Fruit.serialize(result)
 
@@ -58,7 +65,7 @@ def put_fruit(id):
     update_fruit = Fruit.update_by_id(id, payload)
 
     if not update_fruit:
-        return {'erro': 'Não há registro com o id informado'}
+        return {'erro': 'Não há registro com o id informado'}, HTTPStatus.NOT_FOUND
 
     serialized_update = Fruit.serialize(update_fruit)
 
@@ -72,8 +79,7 @@ def delete_fruit(id):
     print(delete)
 
     if not delete:
-        return {'erro': 'Não há registro com o id informado'}
-
+        return {'erro': 'Não há registro com o id informado'}, HTTPStatus.NOT_FOUND
     serialized_delete = Fruit.serialize(delete)
 
     return serialized_delete, HTTPStatus.OK

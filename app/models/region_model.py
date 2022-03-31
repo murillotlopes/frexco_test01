@@ -24,7 +24,7 @@ class Region:
         sql_name = sql.Literal(name)
 
         query = sql.SQL("""
-            select id_region from region WHERE name = {name}
+            select id_region from region WHERE name = {name} AND status = true
         """).format(name = sql_name)
         
         cur.execute(query)

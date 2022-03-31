@@ -2,7 +2,6 @@ from app.models import DatabaseConnector
 from app.models import DatabaseCreator
 
 from psycopg2 import sql
-from psycopg2.errors import UndefinedColumn
 
 from app.models.region_model import Region
 
