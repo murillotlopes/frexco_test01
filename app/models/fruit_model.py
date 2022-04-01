@@ -11,8 +11,8 @@ class Fruit(DatabaseCreator):
     fruit_columns = ['id_fruit', 'name', 'region']
 
     def __init__(self, name: str, region: str):
-        self.name = name.lower()
-        self.id_region = Region.get_id_by_name(region.lower())
+        self.name = name.lower().strip()
+        self.id_region = Region.get_id_by_name(region.lower().strip())
 
 
     @classmethod

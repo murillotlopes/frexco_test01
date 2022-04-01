@@ -8,7 +8,7 @@ class Region:
 
 
     def __init__(self, name:str):
-        self.name = name.lower()
+        self.name = name.lower().strip()
 
     
     @classmethod
